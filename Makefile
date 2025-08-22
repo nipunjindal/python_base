@@ -22,9 +22,10 @@ test: install
 # Lint: format code, run lint checks, and perform type checking in one go
 lint: install
 	$(VENV)/bin/ruff format .
-	$(VENV)/bin/shfmt -i 4 -w $(shell find . -name '*.sh')
+	find . -path './.venv' -prune -o -name '*.sh' -exec $(VENV)/bin/shfmt -i 4 -w {} +
 	$(VENV)/bin/toml-sort -i pyproject.toml
-	$(VENV)/bin/ruff check .
+	$(VENV)/bin/ruff check --fix --select I .
+	$(VENV)/bin/ruff check --fix
 	$(VENV)/bin/ty check .
 
 # Stand-alone type checking target (optional)
@@ -49,6 +50,6 @@ rename:
 		exit 1; \
 	fi
 	@echo "Renaming python_base -> $(NEW)"
-	@grep -RIl 'python_base' pyproject.toml src | xargs sed -i "s/python_base/$(NEW)/g"
+	@grep -RIl 'python_base' pyproject.toml src tests | xargs sed -i "s/python_base/$(NEW)/g"
 	@mv src/python_base src/$(NEW)
 	@echo "Rename complete. Remember to run 'make clean install' to rebuild the venv."
