@@ -10,8 +10,7 @@ all: install
 install: $(VENV)
 
 $(VENV): pyproject.toml
-	uv venv $(VENV)
-	. $(VENV)/bin/activate && uv pip install -e ".[dev]"
+	uv sync --extra dev
 	touch $(VENV)
 
 # Run the test suite using pytest

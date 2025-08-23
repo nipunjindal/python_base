@@ -11,7 +11,10 @@ readme = "README.md"
 keywords = ["template", "uv", "python"]
 authors = [{name = "Nipun Jindal", email = "njindal@adobe.com"}]
 # Runtime dependencies
-dependencies = []
+dependencies = [
+  "torch",
+  "torchvision"
+]
 
 [project.optional-dependencies]
 # Development-only utilities
